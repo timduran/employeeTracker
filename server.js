@@ -127,4 +127,61 @@ function addEmployee() {
 })
 }
 
+function addRole() {
+  var query = `SELECT * FROM role`;
+  db.query(query, function (err, res) {
+
+    inquirer.prompt([
+      {
+        name: 'questionRule',
+        message: 'What is the employees role?'
+      }
+    ])
+      .then(res => {
+        var questionRule = res.questionRule;
+        db.query(query, function (err, res) {
+          if (err) throw err;
+          let roleChoices = res.map(({ id, title }) => ({
+            name: title,
+            value: id
+          }));
+          inquirer.prompt({
+            type: 'list',
+            name: 'department_id',
+            message: 'What will the department be?',
+            choices: roleChoices
+          }).then(function (res) {
+            let roleId = res.department_id;
+            var query = `SELECT * FROM department`;
+            db.query(query, function (err, res) {
+              if (err) throw err;
+              const managerChoices = res.map(({ id, questionRule }) => ({
+                name: `${questionRule}`,
+                value: id
+              }));
+              managerChoices.unshift({ name: 'None', value: null });
+
+              inquirer.prompt({
+                type: 'list',
+                name: 'departmentid',
+                message: 'Who is the role manager?',
+                choices: managerChoices
+              }).then(res => {
+                var employee = {
+                  manager_id: res.managerId,
+                  role_id: roleId,
+                  department_id: departmentid,
+                };
+                db.query(`INSERT INTO role SET ?`, role)
+              })
+                .then(() => console.log(`Added ${department_id} to the database`))
+            })
+            options();
+          })
+        })
+      })
+  })
+}
+
+
 options();
