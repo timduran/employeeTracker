@@ -8,7 +8,7 @@ function options() {
     type: 'list',
     name: 'choice',
     message: 'Welcome to the employee database. What would you like to do?',
-    choices: ['View All Employees', 'View All Roles', 'View All Departments', 'Add Employee']
+    choices: ['View All Employees', 'View All Roles', 'View All Departments', 'Add Employee', 'Add Department', 'Add Role', 'Update Employee Role']
   })
     .then(function (res) {
       switch (res.choice) {
@@ -17,10 +17,23 @@ function options() {
           break;
         case 'View All Roles':
           viewAllRoles();
+          break;
         case 'View All Departments':
           viewAllDepartments();
+          break;
         case 'Add Employee':
           addEmployee();
+          break;
+        case 'Add Department':
+          addDepartment();
+          break;
+        case 'Add Role': 
+          addRole();
+          break;
+        case 'Update Employee Role':
+          // updateRole();
+          console.log('write role')
+          break;
         default:
           break;
       }
