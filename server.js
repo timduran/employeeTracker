@@ -27,7 +27,7 @@ function options() {
         case 'Add Department':
           addDepartment();
           break;
-        case 'Add Role': 
+        case 'Add Role':
           addRole();
           break;
         case 'Update Employee Role':
@@ -252,7 +252,60 @@ function addDepartment() {
   })
 }
 
+function addUpdate() {
+  var query = `SELECT * FROM role`;
+  db.query(query, function (err, res) {
+    inquirer.prompt([
+      {
+        name: 'updateall',
+        message: 'What do you want to update?'
+      }
+    ])
+      .then(res => {
+        var updateall = res.updateall;
+        db.query(query, function (err, res) {
+          if (err) throw err;
 
+          let roleChoices = res.map(({ id, title }) => ({
+            name: title,
+            value: id
+          }));
+          inquirer.prompt({
+            type: 'list',
+            name: 'roleId',
+            message: 'What update do you want on role?',
+            choices: roleChoices
+            let roleId = res.roleId;
+            var query = `SELECT * FROM employee`;
+            db.query(query, function (err, res) {
+              if (err) throw err;
+              const managerChoices = res.map(({ id, update_all }) => ({
+                name: `${update_id}`,
+                value: id
+              }));
+
+              managerChoices.unshift({ name: 'None', value: null });
+              inquirer.prompt({
+                type: 'list',
+                name: 'departmentId',
+                message: 'what update do you want on department?',
+                choices: managerChoices
+              }).then(res => {
+                var employee = {
+                  manager_id: res.managerId,
+                  role_id: roleId,
+                  update_all: updateall,
+                };
+                db.query(`INSERT INTO employee SET ?`, employee)
+              })
+                .then(() => console.log(`Added ${updateall} to the database`))
+            })
+            options();
+          })
+        })
+      })
+  })
+}
 
 
 options();
