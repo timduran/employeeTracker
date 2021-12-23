@@ -275,6 +275,7 @@ function addUpdate() {
             name: 'roleId',
             message: 'What update do you want on role?',
             choices: roleChoices
+          }).then(function (res) {
             let roleId = res.roleId;
             var query = `SELECT * FROM employee`;
             db.query(query, function (err, res) {
